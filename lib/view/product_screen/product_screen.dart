@@ -1,5 +1,7 @@
+import 'package:ajio_dupe_model/controller/cart_screen_controller.dart';
 import 'package:ajio_dupe_model/controller/product_screen_controller.dart';
 import 'package:ajio_dupe_model/utils/color_constants.dart';
+import 'package:ajio_dupe_model/view/cart_screen/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -193,30 +195,49 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
           SizedBox(width: 75),
           Expanded(
-            child: Container(
-              height: 64,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              decoration: BoxDecoration(
-                color: ColorConstants.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    color: ColorConstants.white,
-                    size: 28,
+            child: GestureDetector(
+              onTap: () async {
+                await context.read<CartScreenController>().addProduct(
+                      id: productProvider.product!.id!,
+                      name: productProvider.product!.title.toString(),
+                      price: productProvider.product!.price!,
+                      image: productProvider.product!.image.toString(),
+                      description:
+                          productProvider.product!.description.toString(),
+                    );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartScreen(),
                   ),
-                  Text(
-                    "Add to Cart",
-                    style: TextStyle(
+                );
+              },
+              child: Container(
+                height: 64,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                decoration: BoxDecoration(
+                  color: ColorConstants.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Icon(
+                      Icons.shopping_cart_outlined,
                       color: ColorConstants.white,
-                      fontSize: 22,
-                      letterSpacing: -1,
+                      size: 28,
                     ),
-                  ),
-                ],
+                    Text(
+                      "Add to Cart",
+                      style: TextStyle(
+                        color: ColorConstants.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -1,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
